@@ -57,7 +57,6 @@ const App = () => {
 ## setup ⇒ <code>void</code>
 Sets up the native Braintree client
 
-**Kind**: global constant  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -65,17 +64,15 @@ Sets up the native Braintree client
 
 <a name="isVenmoAvailable"></a>
 
-## isVenmoAvailable ⇒ <code>Promise</code>
+## isVenmoAvailable ⇒ <code>Promise&lt;boolean&gt;</code>
 Checks if the device can launch Venmo on iOS, on Android always returns true
 
-**Kind**: global constant  
 **Returns**: <code>Promise</code> - Promise resolving to the status  
 <a name="authorizeVenmo"></a>
 
-## authorizeVenmo ⇒ <code>Promise.&lt;VenmoResponse&gt;</code>
+## authorizeVenmo ⇒ <code>Promise&lt;VenmoResponse&gt;</code>
 Asks the user to start a Venmo request, if the user approves, returns a nonce to use for a transaction
 
-**Kind**: global constant  
 **Returns**: <code>Promise.&lt;VenmoResponse&gt;</code> - Promise resolving to nonce and the user's venmo username  
 
 | Param | Type | Description |
@@ -84,17 +81,15 @@ Asks the user to start a Venmo request, if the user approves, returns a nonce to
 
 <a name="isGooglePayAvailable"></a>
 
-## isGooglePayAvailable ⇒ <code>Promise</code>
+## isGooglePayAvailable ⇒ <code>Promise&lt;boolean&gt;</code>
 Checks if the device can use Google Pay. Always returns false on iOS devices
 
-**Kind**: global constant  
 **Returns**: <code>Promise</code> - Promise resolving to the status  
 <a name="authorizeGooglePay"></a>
 
-## authorizeGooglePay ⇒ <code>Promise.&lt;NonceResponse&gt;</code>
+## authorizeGooglePay ⇒ <code>Promise&lt;NonceResponse&gt;</code>
 Presents the Google Pay popup, if the user approves, returns a nonce to use for a transaction
 
-**Kind**: global constant  
 **Returns**: <code>Promise.&lt;NonceResponse&gt;</code> - Promise resolving to nonce  
 
 | Param | Type | Description |
@@ -103,17 +98,15 @@ Presents the Google Pay popup, if the user approves, returns a nonce to use for 
 
 <a name="isApplePayAvailable"></a>
 
-## isApplePayAvailable ⇒ <code>Promise</code>
+## isApplePayAvailable ⇒ <code>Promise&lt;boolean&gt;</code>
 Checks if the device can use Apple Pay. Always returns false on Android devices
 
-**Kind**: global constant  
 **Returns**: <code>Promise</code> - Promise resolving to the status  
 <a name="authorizeApplePay"></a>
 
-## authorizeApplePay ⇒ <code>Promise.&lt;NonceResponse&gt;</code>
+## authorizeApplePay ⇒ <code>Promise&lt;NonceResponse&gt;</code>
 Presents the Apple Pay popup, if the user approves, returns a nonce to use for a transaction
 
-**Kind**: global constant  
 **Returns**: <code>Promise.&lt;NonceResponse&gt;</code> - Promise resolving to nonce  
 
 | Param | Type | Description |
@@ -122,10 +115,9 @@ Presents the Apple Pay popup, if the user approves, returns a nonce to use for a
 
 <a name="getCardNonce"></a>
 
-## getCardNonce ⇒ <code>Promise.&lt;CardResponse&gt;</code>
+## getCardNonce ⇒ <code>Promise&lt;CardResponse&gt;</code>
 Creates a nonce for a card
 
-**Kind**: global constant  
 **Returns**: <code>Promise.&lt;CardResponse&gt;</code> - Promise resolving to nonce and card informatiom  
 
 | Param | Type | Description |
