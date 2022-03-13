@@ -1,10 +1,19 @@
 import { Platform } from 'react-native';
 import { RNBraintree } from './nativeModule';
 
-export const setup = (clientToken: string) => {
-  return RNBraintree.setup(clientToken);
+/**
+ * Sets up the native Braintree client 
+ * @param {string} clientAuthorization See {@link https://developer.paypal.com/braintree/docs/guides/authorization/overview|Braintre's Docs}
+ * @returns {void}
+ */
+export const setup = (clientAuthorization: string) => {
+  return RNBraintree.setup(clientAuthorization);
 };
 
+/**
+ * Checks if the device can launch Venmo on iOS, on Android always returns true 
+ * @returns {Promise} Promise resolving to the status
+ */
 export const isVenmoAvailable = async (): Promise<boolean> => {
   if (Platform.OS === 'ios') {
     return RNBraintree.isVenmoAvailable();
@@ -23,6 +32,11 @@ export type VenmoResponse = {
   nonce: string;
 };
 
+/**
+ * Asks the user to start a Venmo request, if the user approves, returns a nonce to use for a transaction
+ * @param {AuthorizeVenmoParams} params See {@link https://developer.paypal.com/braintree/docs/guides/venmo/client-side#payment-method-usage|Braintre's Docs} to find out more on the use / vaulting options
+ * @returns {Promise<VenmoResponse>} Promise resolving to nonce and the user's venmo username
+ */
 export const authorizeVenmo = (
   params: AuthorizeVenmoParams
 ): Promise<VenmoResponse> => {
@@ -32,6 +46,10 @@ export const authorizeVenmo = (
   );
 };
 
+/**
+ * Checks if the device can use Google Pay. Always returns false on iOS devices 
+ * @returns {Promise} Promise resolving to the status
+ */
 export const isGooglePayAvailable = async (): Promise<boolean> => {
   if (Platform.OS !== 'android') {
     return false;
@@ -45,6 +63,11 @@ export type AuthorizeGooglePayParams = {
   billingAddressRequired?: boolean;
 };
 
+/**
+ * Presents the Google Pay popup, if the user approves, returns a nonce to use for a transaction
+ * @param {AuthorizeGooglePayParams} params The price for the transaction that the nonce will be used with
+ * @returns {Promise<NonceResponse>} Promise resolving to nonce
+ */
 export const authorizeGooglePay = (
   params: AuthorizeGooglePayParams
 ): Promise<NonceResponse> => {
@@ -60,6 +83,10 @@ export const authorizeGooglePay = (
 
 const DEFAULT_NETWORKS = ['AmEx', 'Visa', 'MasterCard'];
 
+/**
+ * Checks if the device can use Apple Pay. Always returns false on Android devices 
+ * @returns {Promise} Promise resolving to the status
+ */
 export const isApplePayAvailable = async (
   supportedNetworks?: string[]
 ): Promise<boolean> => {
@@ -86,6 +113,11 @@ export type NonceResponse = {
   nonce: string;
 };
 
+/**
+ * Presents the Apple Pay popup, if the user approves, returns a nonce to use for a transaction
+ * @param {AuthorizeGooglePayParams} params See {@link https://developer.paypal.com/braintree/docs/guides/apple-pay/client-side/ios/v5#create-a-pkpaymentrequest|Braintre's Docs} to learn more about the Apple Pay payment request options
+ * @returns {Promise<NonceResponse>} Promise resolving to nonce
+ */
 export const authorizeApplePay = (
   params: AuthorizeApplePayParams
 ): Promise<NonceResponse> => {
@@ -124,6 +156,12 @@ export type CardResponse = {
   nonce: string | null;
 };
 
+
+/**
+ * Creates a nonce for a card
+ * @param {CardDetails} card The card details you collect on the device
+ * @returns {Promise<CardResponse>} Promise resolving to nonce and card informatiom
+ */
 export const getCardNonce = (card: CardDetails): CardResponse => {
   return RNBraintree.getCardNonce(
     card.cardNumber,

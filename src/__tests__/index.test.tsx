@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 describe('#setup', () => {
-  it('should call setup with the client token', () => {
+  it('should call setup with the client authorization', () => {
     RNBraintree.setup = jest.fn();
 
     Braintree.setup('12345');
