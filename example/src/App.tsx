@@ -7,7 +7,7 @@ import { showError } from './utils';
 import * as Braintree from 'react-native-braintree-sdk';
 
 export default function App() {
-  const [clientToken, setClientToken] = React.useState<string>("");
+  const [clientToken, setClientToken] = React.useState<string>('');
   const [isSetup, setIsSetup] = React.useState(false);
   const [isApplePayAvailable, setIsApplePayAvailable] = React.useState(false);
   const [isVenmoAvailable, setIsVenmoAvailable] = React.useState(false);
