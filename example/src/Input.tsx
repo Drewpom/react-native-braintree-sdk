@@ -5,7 +5,7 @@ type InputProps = {
   value: string;
   onChange(value: string): void;
   label: string;
-}
+};
 
 export const Input: React.FC<InputProps> = ({ value, label, onChange }) => {
   return (
@@ -13,8 +13,8 @@ export const Input: React.FC<InputProps> = ({ value, label, onChange }) => {
       <Text>{label}</Text>
       <TextInput style={styles.input} value={value} onChangeText={onChange} />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   self: {
@@ -35,5 +35,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     paddingHorizontal: 10,
-  }
+  },
 });

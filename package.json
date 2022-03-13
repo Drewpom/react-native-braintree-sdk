@@ -122,7 +122,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "coverage/"
   ],
   "prettier": {
     "quoteProps": "consistent",
