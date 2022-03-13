@@ -1,26 +1,18 @@
-import { NativeModules, Platform } from 'react-native';
-
-const LINKING_ERROR =
-  `The package 'react-native-braintree-sdk' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
-
-const BraintreeSdk = NativeModules.BraintreeSdk
-  ? NativeModules.BraintreeSdk
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+import { Platform } from 'react-native';
+import {RNBraintree} from './nativeModule';
 
 export const setup = (clientToken: string) => {
-  return BraintreeSdk.setup(clientToken);
+  return RNBraintree.setup(clientToken);
 };
-    
+  
+export const isVenmoAvailable = async (): Promise<boolean> => {
+  if (Platform.OS === 'ios') {
+    return RNBraintree.isVenmoAvailable(); 
+  }
+
+  return true;
+}
+
 export type AuthorizeVenmoParams = {
   vault: boolean;
   paymentMethodUsage?: 'multiUse' | 'singleUse';
@@ -32,7 +24,7 @@ export type VenmoResponse = {
 };
 
 export const authorizeVenmo = (params: AuthorizeVenmoParams): Promise<VenmoResponse> => {
-  return BraintreeSdk.authorizeVenmo(
+  return RNBraintree.authorizeVenmo(
     params.vault,
     params.paymentMethodUsage ?? null,
   );
@@ -43,7 +35,7 @@ export const isGooglePayAvailable = async (): Promise<boolean> => {
     return false;
   }
 
-  return BraintreeSdk.isGooglePayAvailable();
+  return RNBraintree.isGooglePayAvailable();
 }
 
 export type AuthorizeGooglePayParams = {
@@ -52,25 +44,21 @@ export type AuthorizeGooglePayParams = {
 };
 
 export const authorizeGooglePay = (params: AuthorizeGooglePayParams): Promise<NonceResponse> => {
-  return BraintreeSdk.authorizeGooglePay(params.price.toFixed(2), params.billingAddressRequired ?? true);
+  if (Platform.OS !== 'android') {
+    throw new Error('Google Pay is only available on Android');
+  }
+
+  return RNBraintree.authorizeGooglePay(params.price.toFixed(2), params.billingAddressRequired ?? true);
 };
 
 const DEFAULT_NETWORKS = ['AmEx', 'Visa', 'MasterCard'];
-
-export const isVenmoAvailable = async (): Promise<boolean> => {
-  if (Platform.OS === 'ios') {
-    return BraintreeSdk.isVenmoAvailable(); 
-  }
-
-  return true;
-}
 
 export const isApplePayAvailable = async (supportedNetworks?: string[]): Promise<boolean> => {
   if (Platform.OS !== 'ios') {
     return false;
   }
 
-  return BraintreeSdk.isApplePayAvailable(supportedNetworks ?? DEFAULT_NETWORKS); 
+  return RNBraintree.isApplePayAvailable(supportedNetworks ?? DEFAULT_NETWORKS); 
 }
 
 export type ApplePayLineItem = {
@@ -94,7 +82,7 @@ export const authorizeApplePay = (params: AuthorizeApplePayParams): Promise<Nonc
     throw new Error('Apple Pay is only available on iOS');
   }
 
-  return BraintreeSdk.authorizeApplePay(
+  return RNBraintree.authorizeApplePay(
     params.merchantId,
     params.lineItems.map(item => {
       return {
@@ -126,7 +114,7 @@ export type CardResponse = {
 }
 
 export const getCardNonce = (card: CardDetails): CardResponse => {
-  return BraintreeSdk.getCardNonce(
+  return RNBraintree.getCardNonce(
     card.cardNumber,
     card.expirationMonth,
     card.expirationYear,
